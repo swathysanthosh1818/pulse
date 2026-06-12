@@ -34,6 +34,21 @@ def get_quote():
     except Exception as e:
         return f"Quote unavailable ({e})"
 
+def get_fact():
+    """Fetch a random useless fact."""
+
+    url = "https://uselessfacts.jsph.pl/api/v2/facts/random"
+
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+
+        data = response.json()
+
+        return data["text"]
+
+    except Exception as e:
+        return f"Fact unavailable ({e})"
 
 def build_summary():
     """Assemble the full daily summary from all data sources."""
@@ -42,7 +57,7 @@ def build_summary():
 
     weather = get_weather()
     quote = get_quote()
-
+    fact = get_fact()
     summary = f"""
 ================================
 PULSE - Daily Summary
@@ -55,6 +70,8 @@ WEATHER
 TODAY'S QUOTE
 {quote}
 
+FUN FACT
+{fact}
 ================================
 """
 
